@@ -107,6 +107,13 @@ class App extends Component {
     this.setState({taskId: event.target.value});
   }
 
+  removeHistoryItem = (item) => {
+    let history = this.state.history;
+    let index = history.indexOf(item);
+    history.splice(index, 1);
+    this.setState({history});
+  }
+
   render() {
     return (
       <div className="App">
@@ -131,7 +138,10 @@ class App extends Component {
         </div>
         <ul className="history">
           {this.state.history.map((item) => {
-            return <li key={item.id}>{this.getTaskDescription(item.task_id)} - {this.getDuration(item.duration)}</li>
+            return <li key={item.id}>
+                {this.getTaskDescription(item.task_id)} - {this.getDuration(item.duration)}
+                &nbsp; <button onClick={() => this.removeHistoryItem(item)}>X</button>
+              </li>
           })}
         </ul>
       </div>
