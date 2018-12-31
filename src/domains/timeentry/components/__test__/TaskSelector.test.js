@@ -10,25 +10,25 @@ describe('<TaskSelector />', () => {
     { id: 1, name: 'Test 2' },
   ];
 
+  const onChange = jest.fn();
+  const wrapper = shallow(<TaskSelector tasks={tasks} onChange={onChange} classes={{}}/>);
+
   it('renders without crashing', () => {
-    const wrapper = shallow(<TaskSelector tasks={tasks} onChange={() => null} classes={{}}/>);
     // console.log(wrapper.debug());
     expect(wrapper.exists()).toBe(true);
 
     tasks.forEach(({ name, id }) => {
       const domOption = wrapper.find(`[data-test="option-${id}"]`);
-      // console.log
-      expect(domOption.prop('value')).toEqual(id)
-      expect(domOption.text()).toEqual(name)
+      expect(domOption.prop('value')).toEqual(id);
+      expect(domOption.children().text()).toEqual(name);
     })
   });
 
   describe('when the user selects a task', () => {
     it('should call onChange', () => {
-      const onChange = jest.fn();
-      const wrapper = shallow(<TaskSelector tasks={tasks} onChange={onChange} classes={{}}/>);
       expect(wrapper.exists()).toBe(true);
-      wrapper.simulate('change', {target: {value: '0'}});
+      const domSelect = wrapper.find('WithStyles(WithFormControlContext(Select))');
+      domSelect.simulate('change', {target: {value: '0'}});
       expect(onChange).toHaveBeenCalledWith('0');
     });
   });

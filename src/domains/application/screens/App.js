@@ -14,14 +14,18 @@ import TaskCreator from 'domains/timeentry/components/TaskCreator';
 import { addItem } from 'domains/timeentry/ducks/history';
 
 ///
+import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import LockIcon from '@material-ui/icons/AlarmAdd';
+// import FormControl from '@material-ui/core/FormControl';
+// import FormControlLabel from '@material-ui/core/FormControlLabel';
+// import Checkbox from '@material-ui/core/Checkbox';
+// import Input from '@material-ui/core/Input';
+// import InputLabel from '@material-ui/core/InputLabel';
+import AlarmIcon from '@material-ui/icons/AlarmAdd';
+import PlayIcon from '@material-ui/icons/PlayArrow';
+import PauseIcon from '@material-ui/icons/Pause';
+import AddIcon from '@material-ui/icons/Add';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -32,8 +36,8 @@ const styles = theme => ({
     display: 'block', // Fix IE 11 issue.
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
-    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: 400,
+    [theme.breakpoints.up(600 + theme.spacing.unit * 3 * 2)]: {
+      width: 600,
       marginLeft: 'auto',
       marginRight: 'auto',
     },
@@ -155,7 +159,7 @@ export class App extends Component {
         <Paper className={classes.paper}>
           <div className={classes.container}>
             <Avatar className={classes.avatar}>
-              <LockIcon />
+              <AlarmIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
               Time Tracker
@@ -169,15 +173,20 @@ export class App extends Component {
                 taskId={taskId}
                 onChange={this.handleChange}
               />
-              <br />
-              <Button variant="contained" color="primary" onClick={() => this.toggleTracking()}>
-                {trackingTime ? (
-                  <span>Stop</span>
-                ) : (
-                    <span>Start</span>
-                )}
-              </Button>
-              <Button variant="contained" color="primary" onClick={() => this.addTime()}>Add Time</Button>
+              <Grid container spacing={16} justify="center">
+                <Grid item>
+                  <Button variant="contained" color="primary" onClick={() => this.toggleTracking()}>
+                    {trackingTime ? (
+                      <PauseIcon />
+                    ) : (
+                      <PlayIcon />
+                    )}
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button variant="contained" color="primary" onClick={() => this.addTime()}><AddIcon /></Button>
+                </Grid>
+              </Grid>
               <div>
                 <TextField
                   id="outlined-name"
@@ -190,6 +199,8 @@ export class App extends Component {
                 />
                 {/* <input type="text" value={getDuration(currentTime)} readOnly /> */}
               </div>
+
+              <Typography component="h1" variant="h5">Time</Typography>
               <HistoryList />
 
               <TaskCreator />

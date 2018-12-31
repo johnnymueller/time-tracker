@@ -57,7 +57,7 @@ export class TaskSelector extends PureComponent {
   }
 
   render() {
-    console.log(this.props)
+    // console.log(this.props)
     const { classes } = this.props;
 
     return (
@@ -86,7 +86,12 @@ export class TaskSelector extends PureComponent {
               <em>None</em>
             </MenuItem>
             {this.props.tasks.map(function(task) {
-              return <MenuItem key={task.id} value={task.id} data-test={`option-${task.id}`}>{task.name}</MenuItem>
+              return <MenuItem
+                      key={task.id}
+                      value={task.id}
+                      data-test={`option-${task.id}`}>
+                        {task.name}
+                     </MenuItem>
             })}
           </Select>
         </FormControl>

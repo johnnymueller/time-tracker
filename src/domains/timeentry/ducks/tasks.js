@@ -2,7 +2,10 @@ import * as R from 'ramda';
 import uuid from 'uuid/v4';
 
 const initialState = {
-  list: [{name: 'First Task', duration: 1800, id: 'test'}],
+  list: [
+    {name: 'Lunch', id: uuid()},
+    {name: 'PTO', id: uuid()},
+  ],
 }
 
 export const ADD_TASK = 'ADD_TASK';
