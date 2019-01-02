@@ -5,6 +5,7 @@ const initialState = {
   list: [
     {name: 'Lunch', id: uuid()},
     {name: 'PTO', id: uuid()},
+    {name: 'Add New...', id: 'ADD_NEW'},
   ],
 }
 

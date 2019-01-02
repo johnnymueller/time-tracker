@@ -1,3 +1,4 @@
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -7,9 +8,12 @@ import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import React, { PureComponent } from 'react';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
 import withStyles from '@material-ui/core/styles/withStyles';
 import * as R from 'ramda';
+
+import TaskCreator from 'domains/timeentry/components/TaskCreator';
 
 const stateMap = (state) => ({
   tasks: taskListSelector(state),
@@ -31,6 +35,7 @@ export class TaskSelector extends PureComponent {
     super(props);
     this.state = {
       labelWidth: 0,
+      newTaskModal: false,
     }
   }
 
@@ -54,6 +59,13 @@ export class TaskSelector extends PureComponent {
 
   onChange = (event) => {
     this.props.onChange(event.target.value);
+    if (event.target.value === 'ADD_NEW') {
+      this.setState({'newTaskModal': true});
+    }
+  }
+
+  handleClose = () => {
+    this.setState({'newTaskModal': false});
   }
 
   render() {
@@ -62,6 +74,11 @@ export class TaskSelector extends PureComponent {
 
     return (
       <div className={classes.container}>
+        <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" open={this.state.newTaskModal}>
+          <DialogTitle id="simple-dialog-title">Create New Task</DialogTitle>
+          <TaskCreator />
+        </Dialog>
+        Modal: {this.state.newTaskModal ? 'yes' : 'no'}
         <FormControl variant="outlined" className={classes.formControl}>
           <InputLabel
             ref={ref => {
