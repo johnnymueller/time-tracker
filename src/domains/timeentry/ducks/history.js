@@ -1,5 +1,6 @@
 import * as R from 'ramda';
 import uuid from 'uuid/v4';
+import moment from 'moment';
 
 const initialState = {
   list: []
@@ -26,7 +27,8 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_ITEM: {
       const {description, duration} = action.payload;
-      const newList = R.append({ description, duration, id: uuid() }, exsistingList);
+      const start = moment();
+      const newList = R.append({ description, start, duration, id: uuid() }, exsistingList);
       return R.assoc('list', newList, state);
     }
     case REMOVE_ITEM: {

@@ -18,8 +18,9 @@ export class HistoryItem extends PureComponent {
   static propTypes = {
     item: PropTypes.shape({
       id: PropTypes.string,
-      duration: PropTypes.number,
       description: PropTypes.string,
+      start: PropTypes.object,
+      duration: PropTypes.number,
     }).isRequired,
     removeItem: PropTypes.func.isRequired,
   }
@@ -30,13 +31,18 @@ export class HistoryItem extends PureComponent {
 
   render() {
     const {
-      duration,
       description,
+      start,
+      duration,
     } = this.props.item;
 
     return (
       <ListItem>
-        <ListItemText primary={`${description} - ${getDuration(duration)}`} data-test="description" />
+        <ListItemText
+          primary={`${description} - ${getDuration(duration)}`}
+          secondary={`${start}`}
+          data-test="description"
+        />
         <ListItemSecondaryAction>
           <IconButton aria-label="Delete" onClick={this.removeItem}>
             <DeleteIcon />

@@ -1,3 +1,4 @@
+import moment from 'moment';
 import * as history from '../history';
 
 describe('#addItem', () => {
@@ -25,6 +26,7 @@ describe('#reducer.addItem', () => {
       const item = newState.list[0];
       expect(item).toHaveProperty('description', 'First item');
       expect(item).toHaveProperty('duration', 4);
+      expect(item).toHaveProperty('start');
       expect(item).toHaveProperty('id');
     });
   });
@@ -35,6 +37,7 @@ describe('#reducer.addItem', () => {
       expect(newState).toHaveProperty('list');
       expect(newState.list[0]).toHaveProperty('description', 'Existing item');
       expect(newState.list[1]).toHaveProperty('description', 'First item');
+      expect(newState.list[1]).toHaveProperty('start');
       expect(newState.list[1]).toHaveProperty('duration', 4);
       expect(newState.list[1]).toHaveProperty('id');
     });
