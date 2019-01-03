@@ -10,8 +10,9 @@ import { getDuration } from 'lib/utils/time';
 
 import TaskSelector from 'domains/timeentry/components/TaskSelector';
 import HistoryList from 'domains/timeentry/components/HistoryList';
-import TaskCreator from 'domains/timeentry/components/TaskCreator';
+// import TaskCreator from 'domains/timeentry/components/TaskCreator';
 import { addItem } from 'domains/timeentry/ducks/history';
+import { changeTask } from 'domains/timeentry/ducks/tasks';
 
 ///
 import Grid from '@material-ui/core/Grid';
@@ -76,16 +77,20 @@ const styles = theme => ({
 
 const actionMap = {
   addItem,
+  changeTask,
 };
 
 const stateMap = (state) => ({
   tasks: state.tasks.list,
+  currentTask: state.tasks.currentTask,
 })
 
 export class App extends Component {
   static propTypes = {
     addItem: PropTypes.func.isRequired,
+    changeTask: PropTypes.func.isRequired,
     tasks: PropTypes.array.isRequired,
+    currentTask: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired,
   }
 
@@ -93,7 +98,7 @@ export class App extends Component {
     super(props);
     this.state = {
       message: '',
-      taskId: '',
+      // taskId: '',
       trackingTime: false,
       intervalId: null,
       currentTime: 0,
@@ -120,22 +125,23 @@ export class App extends Component {
   addTime = () => {
     // store.dispatch({ type: 'ADD' });
     this.setState({ message: '' });
-    if (this.state.taskId === '') {
+    if (!this.props.currentTask) {
       this.setState({ message: 'You must select a task to add time.' })
       return;
     }
 
     if (this.state.trackingTime) {
       this.toggleTracking();
-      this.setState({ taskId: '' });
+      // this.setState({ taskId: '' });
+      this.props.changeTask('');
       this.setState({ currentTime: 0 });
     }
 
-    this.props.addItem(R.prop('name', R.find(R.propEq('id', this.state.taskId), this.props.tasks)), this.state.currentTime);
+    this.props.addItem(R.prop('name', R.find(R.propEq('id', this.props.currentTask), this.props.tasks)), this.state.currentTime);
   }
 
-  handleChange = taskId =>
-    this.setState({ taskId });
+  // handleChange = taskId =>
+  //   this.setState({ taskId });
 
   removeHistoryItem = id =>
     this.setState(currentState => ({history: R.reject(R.propEq('id', id), currentState.history)}));
@@ -143,10 +149,8 @@ export class App extends Component {
   render() {
     const {
       message,
-      taskId,
       currentTime,
       trackingTime,
-      // classes,
     } = this.state;
 
     // console.log(this.props);
@@ -169,10 +173,8 @@ export class App extends Component {
 
               <div className="message">{message}</div>
 
-              <TaskSelector
-                taskId={taskId}
-                onChange={this.handleChange}
-              />
+              <TaskSelector />
+
               <Grid container spacing={16} justify="center">
                 <Grid item>
                   <Button variant="contained" color="primary" onClick={() => this.toggleTracking()}>
@@ -203,7 +205,7 @@ export class App extends Component {
               <Typography component="h1" variant="h5">Time</Typography>
               <HistoryList />
 
-              <TaskCreator />
+              {/* <TaskCreator /> */}
 
               {/* <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="email">Email Address</InputLabel>

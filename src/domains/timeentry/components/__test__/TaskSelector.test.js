@@ -10,8 +10,13 @@ describe('<TaskSelector />', () => {
     { id: 1, name: 'Test 2' },
   ];
 
-  const onChange = jest.fn();
-  const wrapper = shallow(<TaskSelector tasks={tasks} onChange={onChange} classes={{}}/>);
+  const changeTask = jest.fn();
+  const wrapper = shallow(<TaskSelector
+                            classes={{}}
+                            tasks={tasks}
+                            currentTask={'testId'}
+                            changeTask={changeTask}
+                          />);
 
   it('renders without crashing', () => {
     // console.log(wrapper.debug());
@@ -25,11 +30,12 @@ describe('<TaskSelector />', () => {
   });
 
   describe('when the user selects a task', () => {
-    it('should call onChange', () => {
+    it('should call changeTask', () => {
       expect(wrapper.exists()).toBe(true);
       const domSelect = wrapper.find('WithStyles(WithFormControlContext(Select))');
       domSelect.simulate('change', {target: {value: '0'}});
-      expect(onChange).toHaveBeenCalledWith('0');
+      // console.log(domSelect)
+      expect(changeTask).toHaveBeenCalledWith('0');
     });
   });
 });

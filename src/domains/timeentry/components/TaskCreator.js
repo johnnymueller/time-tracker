@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
 
 import { addTask } from 'domains/timeentry/ducks/tasks';
 
@@ -13,16 +15,21 @@ const actionMap = {
 export class TaskCreator extends Component {
   constructor(props) {
     super(props);
-    this.state = {value: ''};
+    this.state = {
+      value: '',
+      showModal: props.show,
+    };
   }
 
   static propTypes = {
     addTask: PropTypes.func.isRequired,
+    show: PropTypes.bool.isRequired,
   }
 
   addTask = () => {
     this.props.addTask(this.state.value);
     this.setState({value: ''});
+    // this.props.taskAdded();
   }
 
   handleChange = (event) => {
@@ -31,7 +38,8 @@ export class TaskCreator extends Component {
 
   render() {
     return (
-      <div>
+      <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" open={this.state.showModal}>
+        <DialogTitle id="simple-dialog-title">Create New Task</DialogTitle>
         <TextField
           id="outlined-name"
           label="New Task"
@@ -42,7 +50,7 @@ export class TaskCreator extends Component {
         />
         <br />
         <Button variant="contained" color="primary" onClick={this.addTask}>Add Task</Button>
-      </div>
+      </Dialog>
     )
   }
 }

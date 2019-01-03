@@ -5,14 +5,14 @@ import { TaskCreator } from '../TaskCreator';
 
 describe('<TaskCreator />', () => {
   it('renders without crashing', () => {
-    const wrapper = shallow(<TaskCreator addTask={() => null} />);
+    const wrapper = shallow(<TaskCreator addTask={() => null} show={true} />);
     expect(wrapper.exists()).toBe(true);
   });
 
   describe('when the user adds a task', () => {
     it('should call addTask', () => {
       const addTask = jest.fn();
-      const wrapper = shallow(<TaskCreator addTask={addTask} />);
+      const wrapper = shallow(<TaskCreator addTask={addTask} show={true} />);
       // console.log(wrapper.debug());
       // console.log('here');
       expect(wrapper.exists()).toBe(true);
