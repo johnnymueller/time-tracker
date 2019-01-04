@@ -11,11 +11,13 @@ describe('<TaskSelector />', () => {
   ];
 
   const changeTask = jest.fn();
+  const openModal = jest.fn();
   const wrapper = shallow(<TaskSelector
                             classes={{}}
                             tasks={tasks}
                             currentTask={'testId'}
                             changeTask={changeTask}
+                            openModal={openModal}
                           />);
 
   it('renders without crashing', () => {

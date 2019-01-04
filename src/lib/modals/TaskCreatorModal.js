@@ -7,38 +7,55 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 
 import { addTask } from 'domains/timeentry/ducks/tasks';
+import { openModalsSelector } from 'domains/timeentry/selectors/modals';
+import { closeModal } from 'domains/timeentry/ducks/modals';
+
+import TaskCreatorModal from 'lib/modals/TaskCreatorModal';
 
 const actionMap = {
   addTask,
+  closeModal: () => closeModal(TaskCreatorModal.modalKey),
+};
+
+const modalKey = 'taskCreatorModal';
+
+const stateMap = () => {
+  const getModal = openModalsSelector(modalKey);
+  return (state) => ({
+    isOpen: getModal(state),
+  });
 };
 
 export class TaskCreator extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: '',
-      showModal: props.show,
-    };
-  }
+  static modalKey = modalKey;
 
   static propTypes = {
     addTask: PropTypes.func.isRequired,
-    show: PropTypes.bool.isRequired,
+    isOpen: PropTypes.bool.isRequired,
+    closeModal: PropTypes.func.isRequired,
   }
+
+  state = {
+    value: '',
+  };
 
   addTask = () => {
     this.props.addTask(this.state.value);
     this.setState({value: ''});
-    // this.props.taskAdded();
+    this.props.closeModal();
   }
 
   handleChange = (event) => {
     this.setState({value: event.target.value});
   }
 
+  handleClose = () => {
+    this.props.closeModal();
+  }
+
   render() {
     return (
-      <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" open={this.state.showModal}>
+      <Dialog onClose={this.handleClose} aria-labelledby="simple-dialog-title" open={this.props.isOpen}>
         <DialogTitle id="simple-dialog-title">Create New Task</DialogTitle>
         <TextField
           id="outlined-name"
@@ -55,4 +72,4 @@ export class TaskCreator extends Component {
   }
 }
 
-export default connect(null, actionMap)(TaskCreator);
+export default connect(stateMap, actionMap)(TaskCreator);

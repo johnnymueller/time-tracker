@@ -30,6 +30,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import TaskCreatorModal from 'lib/modals/TaskCreatorModal';
 
 const styles = theme => ({
   main: {
@@ -159,6 +160,7 @@ export class App extends Component {
 
     return (
       <main className={classes.main}>
+        <TaskCreatorModal />
         <CssBaseline />
         <Paper className={classes.paper}>
           <div className={classes.container}>

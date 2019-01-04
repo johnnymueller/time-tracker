@@ -25,18 +25,15 @@ export const changeTask = (taskId) => ({
 export default (state = initialState, action) => {
   switch (action.type) {
     case ADD_TASK:
+      const id = uuid();
       const exsistingList = R.propOr([], 'list', state);
-      const newList = R.append({ name: action.payload, id: uuid() }, exsistingList);
-      return R.assoc('list', newList, state);
-    case CHANGE_TASK:
-      // const exsistingList = R.propOr([], 'list', state);
-      // const newList = R.append({ name: action.payload, id: uuid() }, exsistingList);
-      // return R.assoc('list', newList, state);
+      const newList = R.prepend({ name: action.payload, id }, exsistingList);
       return {
-        // R.assoc('list', newList, state),
-        list: state.list,
-        currentTask: action.payload
-      };
+        list: newList,
+        currentTask: id,
+      }
+    case CHANGE_TASK:
+      return R.assoc('currentTask', action.payload, state)
     default:
       return state;
   }

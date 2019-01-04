@@ -23,8 +23,8 @@ describe('#reducer.addTask', () => {
       const action = tasks.addTask('First task');
       const newState = tasks.default({list: [{name: 'Existing task'}]}, action);
       expect(newState).toHaveProperty('list');
-      expect(newState.list[0]).toHaveProperty('name', 'Existing task');
-      expect(newState.list[1]).toHaveProperty('name', 'First task');
+      expect(newState.list[0]).toHaveProperty('name', 'First task');
+      expect(newState.list[1]).toHaveProperty('name', 'Existing task');
     });
   });
 });
