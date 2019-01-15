@@ -1,5 +1,6 @@
 import * as R from 'ramda';
 import uuid from 'uuid/v4';
+import axios from 'axios';
 
 const initialState = {
   list: [
@@ -17,6 +18,11 @@ export const addTask = (name) => ({
   type: ADD_TASK,
   payload: name,
 });
+export const addTaskApi = (name) => (dispatch) =>
+  axios.get('https://jsonplaceholder.typicode.com/todos/1').then(
+    response => dispatch(addTask(response.data.title)),
+    error => console.log(error)
+  );
 export const changeTask = (taskId) => ({
   type: CHANGE_TASK,
   payload: taskId,

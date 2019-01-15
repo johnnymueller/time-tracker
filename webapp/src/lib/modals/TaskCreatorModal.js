@@ -6,14 +6,14 @@ import TextField from '@material-ui/core/TextField';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 
-import { addTask } from 'domains/timeentry/ducks/tasks';
+import { addTaskApi } from 'domains/timeentry/ducks/tasks';
 import { openModalsSelector } from 'domains/timeentry/selectors/modals';
 import { closeModal } from 'domains/timeentry/ducks/modals';
 
 import TaskCreatorModal from 'lib/modals/TaskCreatorModal';
 
 const actionMap = {
-  addTask,
+  addTaskApi,
   closeModal: () => closeModal(TaskCreatorModal.modalKey),
 };
 
@@ -30,7 +30,7 @@ export class TaskCreator extends Component {
   static modalKey = modalKey;
 
   static propTypes = {
-    addTask: PropTypes.func.isRequired,
+    addTaskApi: PropTypes.func.isRequired,
     isOpen: PropTypes.bool.isRequired,
     closeModal: PropTypes.func.isRequired,
   }
@@ -39,8 +39,8 @@ export class TaskCreator extends Component {
     value: '',
   };
 
-  addTask = () => {
-    this.props.addTask(this.state.value);
+  addTaskApi = () => {
+    this.props.addTaskApi(this.state.value);
     this.setState({value: ''});
     this.props.closeModal();
   }
@@ -66,7 +66,7 @@ export class TaskCreator extends Component {
           variant="outlined"
         />
         <br />
-        <Button variant="contained" color="primary" onClick={this.addTask}>Add Task</Button>
+        <Button variant="contained" color="primary" onClick={this.addTaskApi}>Add Task</Button>
       </Dialog>
     )
   }
