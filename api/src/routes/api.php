@@ -13,6 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
+// Hack. TODO: set in nginx config or using this: https://github.com/barryvdh/laravel-cors
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Authorization, Content-Type');
+header("Access-Control-Allow-Methods: GET,HEAD,OPTIONS,POST,PUT,DELETE");
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -27,4 +32,12 @@ Route::post('register', 'Auth\RegisterController@register');
     Route::post('articles', 'ArticleController@store');
     Route::put('articles/{article}', 'ArticleController@update');
     Route::delete('articles/{article}', 'ArticleController@delete');
+
+    Route::get('tasks', 'TaskController@index');
+    Route::post('tasks', 'TaskController@store');
+
+    Route::get('items', 'ItemController@index');
+    Route::post('items', 'ItemController@store');
+    Route::put('items/{item}', 'ItemController@update');
+    Route::delete('items/{item}', 'ItemController@delete');
 // });

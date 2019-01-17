@@ -10,13 +10,14 @@ import FormControl from '@material-ui/core/FormControl';
 import withStyles from '@material-ui/core/styles/withStyles';
 import * as R from 'ramda';
 
-import { changeTask } from 'domains/timeentry/ducks/tasks';
+import { getTasks, changeTask } from 'domains/timeentry/ducks/tasks';
 import { openModal } from 'domains/timeentry/ducks/modals';
 import { taskListSelector, taskCurrentTaskSelector } from 'domains/timeentry/selectors/tasks';
 
 import TaskCreatorModal from 'lib/modals/TaskCreatorModal';
 
 const actionMap = {
+  getTasks,
   changeTask,
   openModal: () => openModal(TaskCreatorModal.modalKey),
 };
@@ -40,6 +41,7 @@ export class TaskSelector extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
+      // loading: true,
       labelWidth: 0,
     }
   }
@@ -47,12 +49,24 @@ export class TaskSelector extends PureComponent {
   static propTypes = {
     tasks: PropTypes.array.isRequired,
     classes: PropTypes.object.isRequired,
-    currentTask: PropTypes.string.isRequired,
+    currentTask: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]).isRequired,
     changeTask: PropTypes.func.isRequired,
+    getTasks: PropTypes.func.isRequired,
     openModal: PropTypes.func.isRequired,
   }
 
   componentDidMount() {
+    // console.log(this.state.loading);
+    // if (this.state.loading) {
+      this.props.getTasks();
+      // this.props.getTasks().then(() => {
+    //     this.setState({loading: false});
+    //     console.log(this.state.loading);
+    //   });
+    // }
     const domNode = ReactDOM.findDOMNode(this.InputLabelRef);
     this.setState({
       labelWidth: R.propOr(0, 'offsetWidth', domNode),

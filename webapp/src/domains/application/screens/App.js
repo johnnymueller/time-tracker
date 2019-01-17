@@ -4,25 +4,9 @@ import * as R from 'ramda';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-
-import { getDuration } from 'lib/utils/time';
-// import store from 'lib/store';
-
-import TaskSelector from 'domains/timeentry/components/TaskSelector';
-import HistoryList from 'domains/timeentry/components/HistoryList';
-// import TaskCreator from 'domains/timeentry/components/TaskCreator';
-import { addItem } from 'domains/timeentry/ducks/history';
-import { changeTask } from 'domains/timeentry/ducks/tasks';
-
-///
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-// import FormControl from '@material-ui/core/FormControl';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import Checkbox from '@material-ui/core/Checkbox';
-// import Input from '@material-ui/core/Input';
-// import InputLabel from '@material-ui/core/InputLabel';
 import AlarmIcon from '@material-ui/icons/AlarmAdd';
 import PlayIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
@@ -31,6 +15,13 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import TaskCreatorModal from 'lib/modals/TaskCreatorModal';
+
+import { getDuration } from 'lib/utils/time';
+
+import TaskSelector from 'domains/timeentry/components/TaskSelector';
+import HistoryList from 'domains/timeentry/components/HistoryList';
+import { addItem } from 'domains/timeentry/ducks/history';
+import { changeTask } from 'domains/timeentry/ducks/tasks';
 
 const styles = theme => ({
   main: {
@@ -91,7 +82,10 @@ export class App extends Component {
     addItem: PropTypes.func.isRequired,
     changeTask: PropTypes.func.isRequired,
     tasks: PropTypes.array.isRequired,
-    currentTask: PropTypes.string.isRequired,
+    currentTask: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]).isRequired,
     classes: PropTypes.object.isRequired,
   }
 
@@ -138,7 +132,11 @@ export class App extends Component {
       this.setState({ currentTime: 0 });
     }
 
-    this.props.addItem(R.prop('name', R.find(R.propEq('id', this.props.currentTask), this.props.tasks)), this.state.currentTime);
+    // this.props.addItem(R.prop('name', R.find(R.propEq('id', this.props.currentTask), this.props.tasks)), this.state.currentTime);
+    this.props.addItem({
+      description: R.prop('name', R.find(R.propEq('id', this.props.currentTask), this.props.tasks)),
+      duration: this.state.currentTime,
+    });
   }
 
   // handleChange = taskId =>
