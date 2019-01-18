@@ -9,11 +9,13 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import moment from 'moment';
 
-import { removeItem } from 'domains/timeentry/ducks/history';
+import { updateItem, saveItem, removeItem } from 'domains/timeentry/ducks/history';
 import { TextField } from '@material-ui/core';
 
 const actionMap = {
   removeItem,
+  saveItem,
+  updateItem,
 };
 
 const timeInput = {
@@ -29,11 +31,21 @@ export class HistoryItem extends PureComponent {
       end_datetime: PropTypes.string,
       duration: PropTypes.number,
     }).isRequired,
+    updateItem: PropTypes.func.isRequired,
+    saveItem: PropTypes.func.isRequired,
     removeItem: PropTypes.func.isRequired,
   }
 
   removeItem = () => {
     this.props.removeItem(this.props.item.id);
+  }
+
+  handleChange = (time, position) => {
+    this.props.updateItem(this.props.item, time, position);
+  }
+
+  handleBlur = () => {
+    // this.props.saveItem(this.props.item);
   }
 
   render() {
@@ -54,9 +66,10 @@ export class HistoryItem extends PureComponent {
           id="outlined-name"
           style = {timeInput}
           label="Start Time"
-          value={`${moment(end_datetime).clone().subtract(duration, 'seconds').format('HH:mm')}`}
+          value={`${moment(end_datetime).clone().subtract(duration, 'seconds').format('HH:mm:ss')}`}
           // onChange={this.handleChange}
-          readOnly
+          onChange={(e) => this.handleChange(e.target.value, 'start')}
+          onBlur={() => this.handleBlur()}
           margin="normal"
           variant="outlined"
         />
@@ -64,9 +77,10 @@ export class HistoryItem extends PureComponent {
           id="outlined-name"
           style = {{width: 100}}
           label="End Time"
-          value={`${moment(end_datetime).format('HH:mm')}`}
+          value={`${moment(end_datetime).format('HH:mm:ss')}`}
           // onChange={this.handleChange}
-          readOnly
+          onChange={(e) => this.handleChange(e.target.value, 'end')}
+          onBlur={() => this.handleBlur()}
           margin="normal"
           variant="outlined"
         />
