@@ -63,8 +63,12 @@ export const updateItem = (item, time, position) =>
       console.log(duration)
       newItem.duration = duration;
     } else {
-      newItem.duration = 18000;
-      newItem.end_datetime = moment(moment(item.end_datetime).format('YYYY-MM-DD') + ' ' + time).format('YYYY-MM-DD HH:mm:ss');
+      let end = moment(moment(item.end_datetime).format('YYYY-MM-DD') + ' ' + time);
+      let start = moment(item.end_datetime).clone().subtract(item.duration, 'seconds');
+      let duration = end.diff(start) / 1000;
+      console.log(end, start, duration);
+      newItem.end_datetime = end.format('YYYY-MM-DD HH:mm:ss');
+      newItem.duration = duration;
     }
     dispatch(updateItemData(newItem));
     // console.log(newItem);

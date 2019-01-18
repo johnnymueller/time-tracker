@@ -22,6 +22,8 @@ import TaskSelector from 'domains/timeentry/components/TaskSelector';
 import HistoryList from 'domains/timeentry/components/HistoryList';
 import { addItem } from 'domains/timeentry/ducks/history';
 import { changeTask } from 'domains/timeentry/ducks/tasks';
+import { List, ListItem, ListItemText } from '@material-ui/core';
+import moment from 'moment';
 
 const styles = theme => ({
   main: {
@@ -75,6 +77,7 @@ const actionMap = {
 const stateMap = (state) => ({
   tasks: state.tasks.list,
   currentTask: state.tasks.currentTask,
+  history: state.history.list,
 })
 
 export class App extends Component {
@@ -87,6 +90,7 @@ export class App extends Component {
       PropTypes.number,
     ]).isRequired,
     classes: PropTypes.object.isRequired,
+    history: PropTypes.array.isRequired,
   }
 
   constructor(props) {
@@ -145,6 +149,19 @@ export class App extends Component {
   removeHistoryItem = id =>
     this.setState(currentState => ({history: R.reject(R.propEq('id', id), currentState.history)}));
 
+  getTotal = (key) => {
+    let total = 0;
+    let history = this.props.history;
+    if (history.length > 0) {
+      let list = R.filter(R.propEq('description', key), history);
+      list.map((item) => {
+        total += item.duration;
+      })
+      total = moment.utc(total*1000).format('HH:mm:ss');
+    }
+    return total;
+  }
+
   render() {
     const {
       message,
@@ -202,8 +219,64 @@ export class App extends Component {
                 {/* <input type="text" value={getDuration(currentTime)} readOnly /> */}
               </div>
 
-              <Typography component="h1" variant="h5">Time</Typography>
+              {/* <Typography component="h1" variant="h5">Time</Typography> */}
+
               <HistoryList />
+
+              <List>
+                <ListItem style={{paddingRight: 52}}>
+                  <ListItemText
+                    primary="Check In"
+                    data-test="description"
+                  />
+                  <TextField
+                    id="outlined-name"
+                    // style = {timeInput}
+                    label="Total"
+                    value={this.getTotal('Check In')}
+                    // value="10:20:00"
+                    // onChange={this.handleChange}
+                    readOnly
+                    margin="normal"
+                    variant="outlined"
+                  />
+                </ListItem>
+                <ListItem style={{paddingRight: 52}}>
+                  <ListItemText
+                    primary="PTO"
+                    data-test="description"
+                  />
+                  <TextField
+                    id="outlined-name"
+                    // style = {timeInput}
+                    label="Total"
+                    value={this.getTotal('PTO')}
+                    // value="10:20:00"
+                    // onChange={this.handleChange}
+                    readOnly
+                    margin="normal"
+                    variant="outlined"
+                  />
+                </ListItem>
+                <ListItem style={{paddingRight: 52}}>
+                  <ListItemText
+                    primary="Lunch"
+                    data-test="description"
+                  />
+                  <TextField
+                    id="outlined-name"
+                    // style = {timeInput}
+                    label="Total"
+                    value={this.getTotal('Lunch')}
+                    // value="10:20:00"
+                    // onChange={this.handleChange}
+                    readOnly
+                    margin="normal"
+                    variant="outlined"
+                  />
+                </ListItem>
+              </List>
+
 
               {/* <TaskCreator /> */}
 
