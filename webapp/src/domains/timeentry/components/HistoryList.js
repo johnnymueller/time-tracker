@@ -26,14 +26,11 @@ export class HistoryList extends Component {
 
   render() {
     return (
-      <>
-        <List>
-          {this.props.history.map((item, key) => (
-            <HistoryItem item={item} key={key} />
-          ))}
-        </List>
-        
-      </>
+      <List>
+        {this.props.history.map((item, key) => (
+          <HistoryItem item={item} key={key} />
+        ))}
+      </List>
     )
   }
 }
