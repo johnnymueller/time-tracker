@@ -27,17 +27,11 @@ Route::post('logout', 'Auth\LoginController@logout');
 Route::post('register', 'Auth\RegisterController@register');
 
 // Route::group(['middleware' => 'auth:api'], function() {
-    Route::get('articles', 'ArticleController@index');
-    Route::get('articles/{article}', 'ArticleController@show');
-    Route::post('articles', 'ArticleController@store');
-    Route::put('articles/{article}', 'ArticleController@update');
-    Route::delete('articles/{article}', 'ArticleController@delete');
-
     Route::get('tasks', 'TaskController@index');
     Route::post('tasks', 'TaskController@store');
 
-    Route::get('items', 'ItemController@index');
-    Route::post('items', 'ItemController@store');
-    Route::put('items/{item}', 'ItemController@update');
-    Route::delete('items/{item}', 'ItemController@delete');
+    Route::get('time-entries', 'TimeEntryController@index');
+    Route::post('time-entries', 'TimeEntryController@store');
+    Route::put('time-entries/{time-entry}', 'TimeEntryController@update');
+    Route::delete('time-entries/{time-entry}', 'TimeEntryController@delete');
 // });

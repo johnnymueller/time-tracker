@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateItemsTable extends Migration
+class CreateTimeEntriesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,13 @@ class CreateItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('items', function (Blueprint $table) {
+        Schema::create('time_entries', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('description');
+            $table->integer('task_id')->unsigned();
+            $table->foreign('task_id')
+                  ->references('id')
+                  ->on('tasks');
+            // $table->string('description');
             $table->integer('duration');
             $table->dateTime('end_datetime');
             $table->timestamps();
@@ -29,6 +33,6 @@ class CreateItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('items');
+        Schema::dropIfExists('time_entries');
     }
 }

@@ -2,7 +2,6 @@ import * as R from 'ramda';
 import axios from 'axios';
 
 import API_ENDPOINT from 'lib/apiConstants';
-// import { Promise } from 'core-js';
 
 const initialState = {
   list: [
@@ -22,7 +21,6 @@ export const getTasksData = (tasks) => ({
 
 export const getTasks = () =>
   async (dispatch) => {
-    // dispatch(addTaskData(name));
     try {
       const response = await axios.get(API_ENDPOINT + 'tasks');
       dispatch(getTasksData(response.data));
@@ -36,16 +34,11 @@ export const addTaskData = (name) => ({
   payload: name,
 });
 
-// export const addTask = (name) => (dispatch) =>
-//   axios.get('https://jsonplaceholder.typicode.com/todos/1').then(
-//     response => dispatch(addTaskData(response.data.title)),
-//     error => console.log(error)
-//   );
-
 export const addTask = (name) =>
   async (dispatch) => {
     // dispatch(addTaskData(name));
     try {
+      // axios.post(API_ENDPOINT + 'tasks', {name});
       const response = await axios.post(API_ENDPOINT + 'tasks', {name});
       dispatch(addTaskData(response.data));
     } catch (error) {

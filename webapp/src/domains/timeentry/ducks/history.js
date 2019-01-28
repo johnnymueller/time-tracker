@@ -36,12 +36,12 @@ export const addItemData = (item) => ({
 
 export const addItem = (item) =>
   async (dispatch) => {
-    // dispatch(addTask(name));
+    dispatch(addItemData(item));
     try {
       item.end_datetime = moment().format('YYYY-MM-DD HH:mm:ss');
-      console.log(item)
-      const response = await axios.post(API_ENDPOINT + 'items', item);
-      dispatch(addItemData(response.data));
+      axios.post(API_ENDPOINT + 'items', item);
+      // const response = await axios.post(API_ENDPOINT + 'items', item);
+      // dispatch(addItemData(response.data));
     } catch (error) {
       console.log(error);
     }
@@ -97,10 +97,10 @@ export const removeItemData = (id) => ({
 
 export const removeItem = (id) =>
   async (dispatch) => {
-    // dispatch(addTask(name));
+    dispatch(removeItemData(id));
     try {
-      const response = await axios.delete(API_ENDPOINT + 'items/' + id);
-      dispatch(removeItemData(id));
+      axios.delete(API_ENDPOINT + 'items/' + id);
+      // dispatch(removeItemData(id));
     } catch (error) {
       console.log(error);
     }
