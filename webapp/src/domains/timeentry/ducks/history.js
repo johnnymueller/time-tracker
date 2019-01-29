@@ -22,7 +22,7 @@ export const getItems = () =>
   async (dispatch) => {
     // dispatch(addTask(name));
     try {
-      const response = await axios.get(API_ENDPOINT + 'items');
+      const response = await axios.get(API_ENDPOINT + 'time-entries');
       dispatch(getItemsData(response.data));
     } catch (error) {
       console.log(error);
@@ -39,8 +39,8 @@ export const addItem = (item) =>
     dispatch(addItemData(item));
     try {
       item.end_datetime = moment().format('YYYY-MM-DD HH:mm:ss');
-      axios.post(API_ENDPOINT + 'items', item);
-      // const response = await axios.post(API_ENDPOINT + 'items', item);
+      axios.post(API_ENDPOINT + 'time-entries', item);
+      // const response = await axios.post(API_ENDPOINT + 'time-entries', item);
       // dispatch(addItemData(response.data));
     } catch (error) {
       console.log(error);
@@ -83,7 +83,7 @@ export const saveItem = (item) =>
   async (dispatch) => {
     // dispatch(addTask(name));
     try {
-      const response = await axios.put(API_ENDPOINT + 'items/' + item.id, item);
+      const response = await axios.put(API_ENDPOINT + 'time-entries/' + item.id, item);
       dispatch(saveItemData(response.data));
     } catch (error) {
       console.log(error);
@@ -99,7 +99,7 @@ export const removeItem = (id) =>
   async (dispatch) => {
     dispatch(removeItemData(id));
     try {
-      axios.delete(API_ENDPOINT + 'items/' + id);
+      axios.delete(API_ENDPOINT + 'time-entries/' + id);
       // dispatch(removeItemData(id));
     } catch (error) {
       console.log(error);
