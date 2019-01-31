@@ -11,6 +11,5 @@ class TimeEntry extends Model
     public function tasks()
     {
         return $this->hasOne('App\Task');
-        // test
     }
 }
