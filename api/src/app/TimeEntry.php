@@ -8,9 +8,8 @@ class TimeEntry extends Model
 {
     protected $fillable = ['task_id','duration','end_datetime'];
 
-    public function tasks()
+    public function task()
     {
-        return $this->hasOne('App\Task');
-        // test
+        return $this->belongsTo(Task::class);
     }
 }

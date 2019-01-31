@@ -9,8 +9,8 @@ class TimeEntryController extends Controller
 {
     public function index()
     {
-        // return TimeEntry::with('tasks')->get();
-        return TimeEntry::all();
+        // return TimeEntry::all();
+        return TimeEntry::with('task')->get();
     }
 
     public function show(TimeEntry $TimeEntry)
