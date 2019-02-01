@@ -10,7 +10,14 @@ class TimeEntryController extends Controller
     public function index()
     {
         // return TimeEntry::all();
-        return TimeEntry::with('task')->get();
+        // return TimeEntry::with('task')->get();
+        $entries = [];
+        foreach(TimeEntry::with('task')->get() as $entry) {
+            $entry['task_name'] = $entry['task']['name'];
+            unset($entry['task']);
+            $entries[] = $entry;
+        }
+        return $entries;
     }
 
     public function show(TimeEntry $TimeEntry)
@@ -25,16 +32,16 @@ class TimeEntryController extends Controller
         return response()->json($TimeEntry);
     }
 
-    public function update(Request $request, TimeEntry $TimeEntry)
+    public function update(Request $request, TimeEntry $timeEntry)
     {
-        $TimeEntry->update($request->all());
+        $timeEntry->update($request->all());
 
-        return response()->json($TimeEntry);
+        return response()->json($timeEntry);
     }
 
-    public function delete(TimeEntry $TimeEntry)
+    public function delete(TimeEntry $timeEntry)
     {
-        $TimeEntry->delete();
+        $timeEntry->delete();
 
         return response()->json(null, 204);
     }

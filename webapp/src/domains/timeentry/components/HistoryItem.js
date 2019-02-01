@@ -27,7 +27,7 @@ export class HistoryItem extends PureComponent {
   static propTypes = {
     item: PropTypes.shape({
       id: PropTypes.number,
-      task: PropTypes.string,
+      task_name: PropTypes.string,
       end_datetime: PropTypes.string,
       duration: PropTypes.number,
     }).isRequired,
@@ -50,7 +50,7 @@ export class HistoryItem extends PureComponent {
 
   render() {
     const {
-      task,
+      task_name,
       end_datetime,
       duration,
     } = this.props.item;
@@ -58,7 +58,7 @@ export class HistoryItem extends PureComponent {
     return (
       <ListItem style={{paddingRight: 52}}>
         <ListItemText
-          primary={`${task.name} - ${getDuration(duration)}`}
+          primary={`${task_name} - ${getDuration(duration)}`}
           secondary={`${moment(end_datetime).format('ddd MMM DD')}`}
           data-test="description"
         />

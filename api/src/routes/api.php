@@ -32,6 +32,6 @@ Route::post('register', 'Auth\RegisterController@register');
 
     Route::get('time-entries', 'TimeEntryController@index');
     Route::post('time-entries', 'TimeEntryController@store');
-    Route::put('time-entries/{time-entry}', 'TimeEntryController@update');
-    Route::delete('time-entries/{time-entry}', 'TimeEntryController@delete');
+    Route::put('time-entries/{timeEntry}', 'TimeEntryController@update');
+    Route::delete('time-entries/{timeEntry}', 'TimeEntryController@delete');
 // });

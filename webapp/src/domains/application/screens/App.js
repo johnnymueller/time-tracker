@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -14,16 +15,15 @@ import AddIcon from '@material-ui/icons/Add';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import TaskCreatorModal from 'lib/modals/TaskCreatorModal';
+import { List, ListItem, ListItemText } from '@material-ui/core';
 
+import TaskCreatorModal from 'lib/modals/TaskCreatorModal';
 import { getDuration } from 'lib/utils/time';
 
 import TaskSelector from 'domains/timeentry/components/TaskSelector';
 import HistoryList from 'domains/timeentry/components/HistoryList';
 import { addItem } from 'domains/timeentry/ducks/history';
 import { changeTask } from 'domains/timeentry/ducks/tasks';
-import { List, ListItem, ListItemText } from '@material-ui/core';
-import moment from 'moment';
 
 const styles = theme => ({
   main: {
@@ -128,6 +128,12 @@ export class App extends Component {
       this.setState({ message: 'You must select a task to add time.' })
       return;
     }
+    
+    this.props.addItem({
+      task_id: this.props.currentTask,
+      task_name: R.prop('name', R.find(R.propEq('id', this.props.currentTask), this.props.tasks)),
+      duration: this.state.currentTime,
+    });
 
     if (this.state.trackingTime) {
       this.toggleTracking();
@@ -135,12 +141,6 @@ export class App extends Component {
       this.props.changeTask('');
       this.setState({ currentTime: 0 });
     }
-
-    // this.props.addItem(R.prop('name', R.find(R.propEq('id', this.props.currentTask), this.props.tasks)), this.state.currentTime);
-    this.props.addItem({
-      description: R.prop('name', R.find(R.propEq('id', this.props.currentTask), this.props.tasks)),
-      duration: this.state.currentTime,
-    });
   }
 
   // handleChange = taskId =>
