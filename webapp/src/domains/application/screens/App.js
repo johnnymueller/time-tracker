@@ -149,14 +149,12 @@ export class App extends Component {
   removeHistoryItem = id =>
     this.setState(currentState => ({history: R.reject(R.propEq('id', id), currentState.history)}));
 
-  getTotal = (key) => {
+  getTotal = (id) => {
     let total = 0;
-    let history = this.props.history;
+    const history = this.props.history;
     if (history.length > 0) {
-      let list = R.filter(R.propEq('description', key), history);
-      list.map((item) => {
-        total += item.duration;
-      })
+      let list = R.filter(R.propEq('task_id', id), history);
+      list.map((item) => total += item.duration);
       total = moment.utc(total*1000).format('HH:mm:ss');
     }
     return total;
@@ -169,7 +167,8 @@ export class App extends Component {
       trackingTime,
     } = this.state;
 
-    // console.log(this.props);
+    // const tasks = R.reject(R.propEq('name', 'Add New...'), this.props.tasks);
+    const tasks = R.dropLast(1, this.props.tasks);
 
     const { classes } = this.props;
 
@@ -224,57 +223,22 @@ export class App extends Component {
               <HistoryList />
 
               <List>
-                <ListItem style={{paddingRight: 52}}>
-                  <ListItemText
-                    primary="Check In"
-                    data-test="description"
-                  />
-                  <TextField
-                    id="outlined-name"
-                    // style = {timeInput}
-                    label="Total"
-                    value={this.getTotal('Check In')}
-                    // value="10:20:00"
-                    // onChange={this.handleChange}
-                    readOnly
-                    margin="normal"
-                    variant="outlined"
-                  />
-                </ListItem>
-                <ListItem style={{paddingRight: 52}}>
-                  <ListItemText
-                    primary="PTO"
-                    data-test="description"
-                  />
-                  <TextField
-                    id="outlined-name"
-                    // style = {timeInput}
-                    label="Total"
-                    value={this.getTotal('PTO')}
-                    // value="10:20:00"
-                    // onChange={this.handleChange}
-                    readOnly
-                    margin="normal"
-                    variant="outlined"
-                  />
-                </ListItem>
-                <ListItem style={{paddingRight: 52}}>
-                  <ListItemText
-                    primary="Lunch"
-                    data-test="description"
-                  />
-                  <TextField
-                    id="outlined-name"
-                    // style = {timeInput}
-                    label="Total"
-                    value={this.getTotal('Lunch')}
-                    // value="10:20:00"
-                    // onChange={this.handleChange}
-                    readOnly
-                    margin="normal"
-                    variant="outlined"
-                  />
-                </ListItem>
+                {tasks.map((task) => (
+                  <ListItem style={{paddingRight: 52}} key={task.id}>
+                    <ListItemText
+                      primary={task.name}
+                      data-test="description"
+                    />
+                    <TextField
+                      id="outlined-name"
+                      label="Total"
+                      value={this.getTotal(task.id)}
+                      readOnly
+                      margin="normal"
+                      variant="outlined"
+                    />
+                  </ListItem>
+                ))}
               </List>
 
 

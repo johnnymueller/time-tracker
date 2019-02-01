@@ -58,20 +58,16 @@ export const updateItem = (item, time, position) =>
     if (position === 'start') {
       let end = moment(item.end_datetime);
       let start = moment(moment(item.end_datetime).format('YYYY-MM-DD') + ' ' + time);
-      // console.log(start, end)
       let duration = end.diff(start) / 1000;
-      console.log(duration)
       newItem.duration = duration;
     } else {
       let end = moment(moment(item.end_datetime).format('YYYY-MM-DD') + ' ' + time);
       let start = moment(item.end_datetime).clone().subtract(item.duration, 'seconds');
       let duration = end.diff(start) / 1000;
-      console.log(end, start, duration);
       newItem.end_datetime = end.format('YYYY-MM-DD HH:mm:ss');
       newItem.duration = duration;
     }
     dispatch(updateItemData(newItem));
-    // console.log(newItem);
   }
 
 export const saveItemData = (item) => ({
@@ -119,12 +115,8 @@ export default (state = initialState, action) => {
     }
     case UPDATE_ITEM: {
       let item = R.find(R.propEq('id', action.payload.id), exsistingList);
-      console.log(action.payload);
-      console.log(exsistingList);
       let index = R.indexOf(item, exsistingList);
-      console.log(index);
       const newList = R.update(index, action.payload, exsistingList);
-      // console.log(R.assoc('list', newList, state));
       return R.assoc('list', newList, state);
     }
     case REMOVE_ITEM: {
