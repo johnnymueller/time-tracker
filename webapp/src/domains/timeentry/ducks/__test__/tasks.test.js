@@ -2,16 +2,16 @@ import * as tasks from '../tasks';
 
 describe('#addTask', () => {
   it('should return object with type and payload', () => {
-    const action = tasks.addTask('First task');
+    const action = tasks.addTaskData('First task');
     expect(action).toHaveProperty('type', tasks.ADD_TASK);
     expect(action).toHaveProperty('payload', 'First task');
   });
 });
 
-describe('#reducer.addTask', () => {
+describe('#reducer.addTaskData', () => {
   describe('when there are no existing tasks', () => {
     it('should add task', () => {
-      const action = tasks.addTask('First task');
+      const action = tasks.addTaskData('First task');
       const newState = tasks.default({}, action);
       expect(newState).toHaveProperty('list');
       const task = newState.list[0];

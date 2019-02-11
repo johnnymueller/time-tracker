@@ -2,9 +2,18 @@ import * as history from '../history';
 
 describe('#addItem', () => {
   it('should return object with type and payload', () => {
-    const action = history.addItem('First item', 3);
+    // const action = history.addItem('First item', 3);
+    const action = history.addItem({
+      task_id: 3,
+      task_name: 'First Task',
+      duration: 1800,
+    });
     expect(action).toHaveProperty('type', history.ADD_ITEM);
-    expect(action).toHaveProperty('payload', {description: 'First item', duration: 3});
+    expect(action).toHaveProperty('payload', {
+      task_id: 3,
+      task_name: 'First Task',
+      duration: 1800,
+    });
   });
 });
 

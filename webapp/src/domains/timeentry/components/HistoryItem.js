@@ -1,20 +1,23 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { getDuration } from 'lib/utils/time';
 import { connect } from 'react-redux'
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+// import { TextField } from '@material-ui/core';
 import moment from 'moment';
+import TimePicker from 'rc-time-picker';
+import 'rc-time-picker/assets/index.css';
 
-import { updateItem, saveItem, removeItem } from 'domains/timeentry/ducks/history';
-import { TextField } from '@material-ui/core';
+import { getDuration } from 'lib/utils/time';
+
+import { updateItem, removeItem } from 'domains/timeentry/ducks/history';
 
 const actionMap = {
   removeItem,
-  saveItem,
+  // saveItem,
   updateItem,
 };
 
@@ -32,7 +35,7 @@ export class HistoryItem extends PureComponent {
       duration: PropTypes.number,
     }).isRequired,
     updateItem: PropTypes.func.isRequired,
-    saveItem: PropTypes.func.isRequired,
+    // saveItem: PropTypes.func.isRequired,
     removeItem: PropTypes.func.isRequired,
   }
 
@@ -41,11 +44,7 @@ export class HistoryItem extends PureComponent {
   }
 
   handleChange = (time, position) => {
-    this.props.updateItem(this.props.item, time, position);
-  }
-
-  handleBlur = () => {
-    // this.props.saveItem(this.props.item);
+    this.props.updateItem(this.props.item, time.format('HH:mm:ss'), position);
   }
 
   render() {
@@ -62,13 +61,23 @@ export class HistoryItem extends PureComponent {
           secondary={`${moment(end_datetime).format('ddd MMM DD')}`}
           data-test="description"
         />
-        <TextField
+        <TimePicker
+          style={timeInput}
+          defaultValue={moment(end_datetime).clone().subtract(duration, 'seconds')}
+          onChange={(val) => this.handleChange(val, 'start')}
+        />
+        <TimePicker
+          style={timeInput}
+          defaultValue={moment(end_datetime)}
+          onChange={(val) => this.handleChange(val, 'end')}
+        />
+        {/* <TextField
           id="outlined-name"
           style = {timeInput}
           label="Start Time"
           value={`${moment(end_datetime).clone().subtract(duration, 'seconds').format('HH:mm:ss')}`}
           // onChange={this.handleChange}
-          onChange={(e) => this.handleChange(e.target.value, 'start')}
+          onChange={(e) => this.handleTheChange(e.target.value, 'start')}
           onBlur={() => this.handleBlur()}
           margin="normal"
           variant="outlined"
@@ -79,11 +88,11 @@ export class HistoryItem extends PureComponent {
           label="End Time"
           value={`${moment(end_datetime).format('HH:mm:ss')}`}
           // onChange={this.handleChange}
-          onChange={(e) => this.handleChange(e.target.value, 'end')}
+          onChange={(e) => this.handleTheChange(e.target.value, 'end')}
           onBlur={() => this.handleBlur()}
           margin="normal"
           variant="outlined"
-        />
+        /> */}
         <ListItemSecondaryAction>
           <IconButton aria-label="Delete" onClick={this.removeItem}>
             <DeleteIcon />
